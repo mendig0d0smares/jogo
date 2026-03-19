@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Russo+One&display=swap');
+ 
+:root {
+    --amarelo: #FFE600;
+    --laranja: #FF6B00;
+    --vermelho: #FF1A1A;
+    --azul-neon: #00F0FF;
+    --roxo: #7B00FF;
+    --escuro: #0a0010;
+    --medio: #12001e;
+}
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+body {
+    background-color: var(--escuro);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Boogaloo', cursive;
+    overflow: hidden;
+}
+ 
+/* Grade de pista no fundo */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 240, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gradeMove 6s linear infinite;
+    z-index: 0;
+}
+ 
+@keyframes gradeMove {
+    from { background-position: 0 0; }
+    to   { background-position: 60px 60px; }
+}
+ 
+/* Brilhos de fundo */
+.bolha {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+    animation: flutuar 8s ease-in-out infinite alternate;
+}
+ 
+@keyframes flutuar {
+    from { transform: scale(1); }
+    to   { transform: scale(1.2) translate(15px, -15px); }
+}
+ 
+/* Container principal */
+header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 52px;
+    text-align: center;
+    padding: 64px 56px;
+}
+ 
+/* Borda neon animada */
+header::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, var(--amarelo), var(--laranja), var(--vermelho), var(--roxo), var(--azul-neon));
+    background-size: 300% 300%;
+    animation: gradienteGira 4s linear infinite;
+    z-index: -1;
+    filter: blur(3px);
+}
+ 
+header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--medio);
+    border-radius: 24px;
+    z-index: -1;
+}
+ 
+@keyframes gradienteGira {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+ 
+/* Título */
+h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, var(--amarelo) 0%, var(--laranja) 55%, var(--vermelho) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 14px rgba(255, 107, 0, 0.9))
+            drop-shadow(0 0 35px rgba(255, 107, 0, 0.5));
+    animation: pulsaTitulo 2s ease-in-out infinite alternate;
+}
+ 
+@keyframes pulsaTitulo {
+    from { filter: drop-shadow(0 0 10px rgba(255,107,0,0.8)) drop-shadow(0 0 25px rgba(255,107,0,0.4)); }
+    to   { filter: drop-shadow(0 0 22px rgba(255,230,0,1))   drop-shadow(0 0 55px rgba(255,107,0,0.9)); }
+}
+ 
+/* Emoji de carros abaixo do título */
+h1::after {
+    content: '🚗💥🚙';
+    display: block;
+    font-size: 2.8rem;
+    margin-top: 16px;
+    -webkit-text-fill-color: initial;
+    filter: none;
+    animation: balancar 1s ease-in-out infinite alternate;
+}
+ 
+@keyframes balancar {
+    from { transform: translateX(-10px) rotate(-4deg); }
+    to   { transform: translateX(10px) rotate(4deg); }
+}
+ 
+/* Botão */
+a {
+    display: inline-block;
+    text-decoration: none;
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.9rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--escuro);
+    background: linear-gradient(135deg, var(--amarelo) 0%, var(--laranja) 100%);
+    padding: 20px 72px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 20px rgba(255, 230, 0, 0.6),
+        0 0 50px rgba(255, 107, 0, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    animation: botaoPulsa 1.8s ease-in-out infinite alternate;
+}
+ 
+@keyframes botaoPulsa {
+    from { box-shadow: 0 0 15px rgba(255,230,0,0.5), 0 0 40px rgba(255,107,0,0.2); }
+    to   { box-shadow: 0 0 32px rgba(255,230,0,0.95), 0 0 75px rgba(255,107,0,0.6); }
+}
+ 
+/* Reflexo que varre o botão */
+a::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+    animation: varrer 2.8s ease-in-out infinite;
+}
+ 
+@keyframes varrer {
+    0%   { left: -75%; }
+    45%  { left: 125%; }
+    100% { left: 125%; }
+}
+ 
+a:hover {
+    transform: scale(1.09) translateY(-4px);
+    box-shadow:
+        0 0 45px rgba(255, 230, 0, 1),
+        0 0 90px rgba(255, 107, 0, 0.75);
+}
+ 
+a:active {
+    transform: scale(0.95) translateY(2px);
+}
+ 

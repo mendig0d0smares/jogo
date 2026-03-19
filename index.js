@@ -90,7 +90,7 @@ function desenhaHUD(){
     des.fillStyle = 'rgba(0,0,100,0.55)'
     des.fillRect(8, 8, 220, 60)
     des.fillStyle = '#7cf'
-    des.fillText('J1 — W/S', 16, 28)
+    des.fillText('V1 — W/S', 16, 28)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro.vida, 0)}   ★ ${carro.pontos}`, 16, 54)
 
@@ -98,7 +98,7 @@ function desenhaHUD(){
     des.fillStyle = 'rgba(100,0,0,0.55)'
     des.fillRect(8, 358, 220, 60)
     des.fillStyle = '#f88'
-    des.fillText('J2 — ↑/↓', 16, 378)
+    des.fillText('V2 — ↑/↓', 16, 378)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro2.vida, 0)}   ★ ${carro2.pontos}`, 16, 404)
 

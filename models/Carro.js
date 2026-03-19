@@ -74,7 +74,7 @@ class Carro extends Obj{
     pontos = 0
 
     // Limites verticais da pista (metade superior: y de 3 a 345)
-    limiteMin = 3
+    limiteMin = 55
     limiteMax = 345
 
     mov_car(){
@@ -113,8 +113,8 @@ class Carro2 extends Obj{
     pontos = 0
 
     // Pista inferior: y de 355 a 692
-    limiteMin = 355
-    limiteMax = 692
+    limiteMin = 400
+    limiteMax = 700
 
     mov_car(){
         this.y += this.dir
