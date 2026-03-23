@@ -105,27 +105,13 @@ function desenhaHUD(){
     des.restore()
 }
 
-// ─── Game Over por pista ───
+// Game Over
 function gameOver(){
     if(carro.vida <= 0){
-        des.save()
-        des.fillStyle = 'rgba(0,0,80,0.75)'
-        des.fillRect(300, 80, 620, 120)
-        des.font = 'bold 48px monospace'
-        des.fillStyle = '#7cf'
-        des.textAlign = 'center'
-        des.fillText('JOGADOR 1 — GAME OVER', 600, 155)
-        des.restore()
+        window.location.href = "./win2.html";
     }
     if(carro2.vida <= 0){
-        des.save()
-        des.fillStyle = 'rgba(80,0,0,0.75)'
-        des.fillRect(300, 430, 620, 120)
-        des.font = 'bold 48px monospace'
-        des.fillStyle = '#f88'
-        des.textAlign = 'center'
-        des.fillText('JOGADOR 2 — GAME OVER', 600, 505)
-        des.restore()
+        window.location.href = "./win1.html";
     }
 }
 
@@ -151,7 +137,7 @@ function desenha(){
     gameOver()
 }
 
-// ─── Atualiza ───
+// Atualiza
 function atualiza(){
     if(carro.vida > 0){
         carro.mov_car()
@@ -169,7 +155,7 @@ function atualiza(){
     pontuacao()
 }
 
-// ─── Loop principal ───
+// Loop principal
 function main(){
     des.clearRect(0, 0, 1200, 700)
     desenha()
