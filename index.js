@@ -83,22 +83,25 @@ function desenhaDivisoria(){
 
 // ─── HUD (vida e pontos) ───
 function desenhaHUD(){
+    const nivel1 = nivelVelocidade(carro.pontos) + 1
+    const nivel2 = nivelVelocidade(carro2.pontos) + 1
+
     des.save()
     des.font = 'bold 18px monospace'
 
     // Jogador 1 — topo esquerdo
     des.fillStyle = 'rgba(0,0,100,0.55)'
-    des.fillRect(8, 8, 220, 60)
+    des.fillRect(8, 8, 260, 60)
     des.fillStyle = '#7cf'
-    des.fillText('V1 — W/S', 16, 28)
+    des.fillText(`V1 — W/S  ⚡ Vel ${nivel1}`, 16, 28)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro.vida, 0)}   ★ ${carro.pontos}`, 16, 54)
 
     // Jogador 2 — meio esquerdo
     des.fillStyle = 'rgba(100,0,0,0.55)'
-    des.fillRect(8, 358, 220, 60)
+    des.fillRect(8, 358, 260, 60)
     des.fillStyle = '#f88'
-    des.fillText('V2 — ↑/↓', 16, 378)
+    des.fillText(`V2 — ↑/↓  ⚡ Vel ${nivel2}`, 16, 378)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro2.vida, 0)}   ★ ${carro2.pontos}`, 16, 404)
 
@@ -141,15 +144,15 @@ function desenha(){
 function atualiza(){
     if(carro.vida > 0){
         carro.mov_car()
-        carroInimigo.mov_car()
-        carroInimigo2.mov_car()
-        carroInimigo3.mov_car()
+        carroInimigo.mov_car(carro.pontos)
+        carroInimigo2.mov_car(carro.pontos)
+        carroInimigo3.mov_car(carro.pontos)
     }
     if(carro2.vida > 0){
         carro2.mov_car()
-        carroInimigoB.mov_car()
-        carroInimigoB2.mov_car()
-        carroInimigoB3.mov_car()
+        carroInimigoB.mov_car(carro2.pontos)
+        carroInimigoB2.mov_car(carro2.pontos)
+        carroInimigoB3.mov_car(carro2.pontos)
     }
     colisao()
     pontuacao()
