@@ -93,15 +93,15 @@ function desenhaHUD(){
     des.fillStyle = 'rgba(0,0,100,0.55)'
     des.fillRect(8, 8, 260, 60)
     des.fillStyle = '#7cf'
-    des.fillText(`V1 — W/S  ⚡ Vel ${nivel1}`, 16, 28)
+    des.fillText(`V1 — W/S  ⚡ lvl ${nivel1}`, 16, 28)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro.vida, 0)}   ★ ${carro.pontos}`, 16, 54)
 
     // Jogador 2 — meio esquerdo
-    des.fillStyle = 'rgba(100,0,0,0.55)'
+    des.fillStyle = 'rgba(17, 100, 0, 0.55)'
     des.fillRect(8, 358, 260, 60)
     des.fillStyle = '#f88'
-    des.fillText(`V2 — ↑/↓  ⚡ Vel ${nivel2}`, 16, 378)
+    des.fillText(`V2 — ↑/↓  ⚡ lvl ${nivel2}`, 16, 378)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro2.vida, 0)}   ★ ${carro2.pontos}`, 16, 404)
 

@@ -193,6 +193,12 @@ class Carro2 extends Obj{
     }
 }
 
+function nivelVelocidade(pontos){
+    if(pontos < 700)  return 0
+    if(pontos < 3000)  return 2
+    else return 3
+}
+
 class CarroInimigo extends Obj{
 
     recomeca(yMin, yMax){
@@ -204,8 +210,9 @@ class CarroInimigo extends Obj{
         }
     }
 
-    mov_car(){
-        this.x -= 4
+    mov_car(pontos){
+        const velocidade = 4 + nivelVelocidade(pontos || 0)
+        this.x -= velocidade
         if(this.x <= -200){
             this.recomeca()
         }
