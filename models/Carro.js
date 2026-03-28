@@ -193,10 +193,13 @@ class Carro2 extends Obj{
     }
 }
 
+// ─── Velocidades por nível: [nível1, nível2, nível3] ───
+const VELOCIDADES = [4, 7, 11]
+
 function nivelVelocidade(pontos){
-    if(pontos < 700)  return 0
-    if(pontos < 3000)  return 2
-    else return 3
+    if(pontos >= 3000) return 2
+    if(pontos >= 600)  return 1
+    return 0
 }
 
 class CarroInimigo extends Obj{
@@ -211,8 +214,8 @@ class CarroInimigo extends Obj{
     }
 
     mov_car(pontos){
-        const velocidade = 4 + nivelVelocidade(pontos || 0)
-        this.x -= velocidade
+        const vel = VELOCIDADES[nivelVelocidade(pontos)]
+        this.x -= vel
         if(this.x <= -200){
             this.recomeca()
         }
@@ -236,8 +239,9 @@ class CarroInimigoInf extends CarroInimigo {
 }
 
 class Estrada extends Obj{
-    mov_est(){
-        this.x -= 6
+    mov_est(pontos){
+        const vel = VELOCIDADES[nivelVelocidade(pontos)] + 2
+        this.x -= vel
         if(this.x < -60){
             this.x = 1300
         }
