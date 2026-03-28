@@ -73,15 +73,15 @@ class Carro extends Obj{
     vida = 5
     pontos = 0
 
-    // Limites verticais da pista (metade superior: y de 3 a 345)
-    limiteMin = 55
-    limiteMax = 345
+    // Limites verticais da pista superior
+    limiteMin = 10
+    limiteMax = 295   // 345 - h(50)
 
     mov_car(){
         this.y += this.dir
         if(this.y < this.limiteMin){
             this.y = this.limiteMin
-        } else if(this.y > this.limiteMax){
+        } else if(this.y + this.h > this.limiteMax + this.h){
             this.y = this.limiteMax
         }
     }
@@ -112,15 +112,15 @@ class Carro2 extends Obj{
     vida = 5
     pontos = 0
 
-    // Pista inferior: y de 355 a 692
-    limiteMin = 400
-    limiteMax = 700
+    // Pista inferior
+    limiteMin = 360
+    limiteMax = 645   // 700 - h(55)
 
     mov_car(){
         this.y += this.dir
         if(this.y < this.limiteMin){
             this.y = this.limiteMin
-        } else if(this.y > this.limiteMax){
+        } else if(this.y + this.h > this.limiteMax + this.h){
             this.y = this.limiteMax
         }
     }

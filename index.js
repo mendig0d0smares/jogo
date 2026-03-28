@@ -1,21 +1,34 @@
 let canvas = document.getElementById('des')
 let des = canvas.getContext('2d')
 
+// ─── Som de colisão ───
+const bonk = new Audio('./bonk.wav')
+
+// ─── Sprites ───
+const imgPeixe    = new Image(); imgPeixe.src    = './peixe.png'
+const imgPeixeDmg = new Image(); imgPeixeDmg.src = './peixe_dmg.png'
+const imgPedra    = new Image(); imgPedra.src    = './pedra.png'
+
+// ─── Controle de dano visual ───
+let dmgTimer1 = 0   // frames que o jogador 1 fica com sprite de dano
+let dmgTimer2 = 0   // frames que o jogador 2 fica com sprite de dano
+const DMG_FRAMES = 20
+
 // ─── Inimigos da pista SUPERIOR (Jogador 1) ───
-let carroInimigo  = new CarroInimigoSup(1300, 200, 50, 50, 'darkgreen')
-let carroInimigo2 = new CarroInimigoSup(1600, 280, 50, 50, 'rgb(247, 0, 255)')
-let carroInimigo3 = new CarroInimigoSup(1900, 100, 50, 50, 'rgb(255, 238, 0)')
+let carroInimigo  = new CarroInimigoSup(1300, 200, 80, 55, 'darkgreen')
+let carroInimigo2 = new CarroInimigoSup(1600, 280, 80, 55, 'rgb(247, 0, 255)')
+let carroInimigo3 = new CarroInimigoSup(1900, 100, 80, 55, 'rgb(255, 238, 0)')
 
 // ─── Inimigos da pista INFERIOR (Jogador 2) ───
-let carroInimigoB  = new CarroInimigoInf(1400, 450, 50, 50, 'orangered')
-let carroInimigoB2 = new CarroInimigoInf(1700, 560, 50, 50, 'rgb(0, 200, 255)')
-let carroInimigoB3 = new CarroInimigoInf(2000, 400, 50, 50, 'rgb(0, 255, 128)')
+let carroInimigoB  = new CarroInimigoInf(1400, 450, 80, 55, 'orangered')
+let carroInimigoB2 = new CarroInimigoInf(1700, 560, 80, 55, 'rgb(0, 200, 255)')
+let carroInimigoB3 = new CarroInimigoInf(2000, 400, 80, 55, 'rgb(0, 255, 128)')
 
 // ─── Jogador 1 — pista SUPERIOR (W/S) ───
-let carro = new Carro(100, 200, 50, 50, 'darkblue')
+let carro = new Carro(100, 200, 80, 55, 'darkblue')
 
 // ─── Jogador 2 — pista INFERIOR (↑/↓) ───
-let carro2 = new Carro2(100, 520, 50, 50, 'darkred')
+let carro2 = new Carro2(100, 520, 80, 55, 'darkred')
 
 // ─── Controles Jogador 1 (W / S) ───
 document.addEventListener('keydown', (e) => {
@@ -43,17 +56,23 @@ document.addEventListener('keyup', (e) => {
     }
 })
 
+// ─── Som ───
+function tocaBonk(){
+    bonk.currentTime = 0
+    bonk.play()
+}
+
 // ─── Colisão ───
 function colisao(){
     // Jogador 1
-    if(carro.colid(carroInimigo))  { carroInimigo.recomeca();  carro.vida -= 1 }
-    if(carro.colid(carroInimigo2)) { carroInimigo2.recomeca(); carro.vida -= 1 }
-    if(carro.colid(carroInimigo3)) { carroInimigo3.recomeca(); carro.vida -= 1 }
+    if(carro.colid(carroInimigo))  { carroInimigo.recomeca();  carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
+    if(carro.colid(carroInimigo2)) { carroInimigo2.recomeca(); carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
+    if(carro.colid(carroInimigo3)) { carroInimigo3.recomeca(); carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
 
     // Jogador 2
-    if(carro2.colid(carroInimigoB))  { carroInimigoB.recomeca();  carro2.vida -= 1 }
-    if(carro2.colid(carroInimigoB2)) { carroInimigoB2.recomeca(); carro2.vida -= 1 }
-    if(carro2.colid(carroInimigoB3)) { carroInimigoB3.recomeca(); carro2.vida -= 1 }
+    if(carro2.colid(carroInimigoB))  { carroInimigoB.recomeca();  carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
+    if(carro2.colid(carroInimigoB2)) { carroInimigoB2.recomeca(); carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
+    if(carro2.colid(carroInimigoB3)) { carroInimigoB3.recomeca(); carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
 }
 
 // ─── Pontuação ───
@@ -65,6 +84,19 @@ function pontuacao(){
     if(carro2.point(carroInimigoB))  carro2.pontos += 5
     if(carro2.point(carroInimigoB2)) carro2.pontos += 5
     if(carro2.point(carroInimigoB3)) carro2.pontos += 5
+}
+
+// ─── Desenha sprite no lugar de um carro (alinhado com hitbox) ───
+const DEBUG_HITBOX = false  // mude para true para ver a hitbox em vermelho
+function desenhaSprite(img, obj){
+    des.drawImage(img, obj.x, obj.y, obj.w, obj.h)
+    if(DEBUG_HITBOX){
+        des.save()
+        des.strokeStyle = 'red'
+        des.lineWidth = 2
+        des.strokeRect(obj.x, obj.y, obj.w, obj.h)
+        des.restore()
+    }
 }
 
 // ─── Linha divisória ───
@@ -93,7 +125,7 @@ function desenhaHUD(){
     des.fillStyle = 'rgba(0,0,100,0.55)'
     des.fillRect(8, 8, 260, 60)
     des.fillStyle = '#7cf'
-    des.fillText(`V1 — W/S  ⚡ LVL ${nivel1}`, 16, 28)
+    des.fillText(`P1 — W/S   LVL ${nivel1}`, 16, 28)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro.vida, 0)}   ★ ${carro.pontos}`, 16, 54)
 
@@ -101,7 +133,7 @@ function desenhaHUD(){
     des.fillStyle = 'rgba(100,0,0,0.55)'
     des.fillRect(8, 358, 260, 60)
     des.fillStyle = '#f88'
-    des.fillText(`V2 — ↑/↓  ⚡ LVL ${nivel2}`, 16, 378)
+    des.fillText(`P2 — ↑/↓   LVL ${nivel2}`, 16, 378)
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro2.vida, 0)}   ★ ${carro2.pontos}`, 16, 404)
 
@@ -122,19 +154,19 @@ function gameOver(){
 function desenha(){
     desenhaDivisoria()
 
-    // Inimigos superiores
-    carroInimigo.des_carro()
-    carroInimigo2.des_carro()
-    carroInimigo3.des_carro()
+    // Inimigos — pedra.png
+    desenhaSprite(imgPedra, carroInimigo)
+    desenhaSprite(imgPedra, carroInimigo2)
+    desenhaSprite(imgPedra, carroInimigo3)
+    desenhaSprite(imgPedra, carroInimigoB)
+    desenhaSprite(imgPedra, carroInimigoB2)
+    desenhaSprite(imgPedra, carroInimigoB3)
 
-    // Inimigos inferiores
-    carroInimigoB.des_carro()
-    carroInimigoB2.des_carro()
-    carroInimigoB3.des_carro()
+    // Jogador 1 — peixe normal ou dano
+    desenhaSprite(dmgTimer1 > 0 ? imgPeixeDmg : imgPeixe, carro)
 
-    // Jogadores
-    carro.des_carro()
-    carro2.des_carro()
+    // Jogador 2 — peixe normal ou dano
+    desenhaSprite(dmgTimer2 > 0 ? imgPeixeDmg : imgPeixe, carro2)
 
     desenhaHUD()
     gameOver()
@@ -142,6 +174,10 @@ function desenha(){
 
 // Atualiza
 function atualiza(){
+    // Countdown dos timers de dano
+    if(dmgTimer1 > 0) dmgTimer1--
+    if(dmgTimer2 > 0) dmgTimer2--
+
     if(carro.vida > 0){
         carro.mov_car()
         carroInimigo.mov_car(carro.pontos)
