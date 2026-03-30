@@ -8,11 +8,11 @@ const bonk = new Audio('./bonk.wav')
 const imgPeixe    = new Image(); imgPeixe.src    = './peixe.png'
 const imgPeixeDmg = new Image(); imgPeixeDmg.src = './peixe_dmg.png'
 const imgPedra    = new Image(); imgPedra.src    = './pedra.png'
-const imgSoul     = new Image(); imgSoul.src     = './soul.jpg'
+const imgSoul     = new Image(); imgSoul.src     = './soul.png'
 
 // ─── Controle de dano visual ───
-let dmgTimer1 = 0   // frames que o jogador 1 fica com sprite de dano
-let dmgTimer2 = 0   // frames que o jogador 2 fica com sprite de dano
+let dmgTimer1 = 0
+let dmgTimer2 = 0
 const DMG_FRAMES = 20
 
 // ─── Inimigos da pista SUPERIOR (Jogador 1) ───
@@ -31,13 +31,34 @@ let carro = new Carro(100, 200, 80, 55, 'darkblue')
 // ─── Jogador 2 — pista INFERIOR (↑/↓) ───
 let carro2 = new Carro2(100, 520, 80, 55, 'darkred')
 
-// ─── Coletáveis de vida (soul.jpg) ───
-// Um por pista, com spawn atrasado para não aparecer no início
+// ─── Coletáveis de vida ───
 const SOUL_W = 40
 const SOUL_H = 40
-let soul1 = new Coletavel(1800, 150, SOUL_W, SOUL_H, 10,  295)   // pista superior
-let soul2 = new Coletavel(2200, 500, SOUL_W, SOUL_H, 360, 645)   // pista inferior
+let soul1 = new Coletavel(1800, 150, SOUL_W, SOUL_H, 10,  295)
+let soul2 = new Coletavel(2200, 500, SOUL_W, SOUL_H, 360, 645)
 const VIDA_MAX = 5
+
+// ─── Background do body por nível ───
+const BACKGROUNDS = [
+    "url('./lvl1_bg.jpg')",
+    "url('./lvl2_bg.jpg')",
+    "url('./lvl3_bg.jpg')"
+]
+let nivelAnterior = -1
+
+function atualizaBackground(){
+    const nivel1 = nivelVelocidade(carro.pontos)
+    const nivel2 = nivelVelocidade(carro2.pontos)
+    const nivelAtual = Math.max(nivel1, nivel2)  // 0, 1 ou 2
+
+    if(nivelAtual !== nivelAnterior){
+        document.body.style.backgroundImage    = BACKGROUNDS[nivelAtual]
+        document.body.style.backgroundSize     = 'cover'
+        document.body.style.backgroundPosition = 'center'
+        document.body.style.backgroundRepeat   = 'no-repeat'
+        nivelAnterior = nivelAtual
+    }
+}
 
 // ─── Controles Jogador 1 (W / S) ───
 document.addEventListener('keydown', (e) => {
@@ -46,7 +67,6 @@ document.addEventListener('keydown', (e) => {
     } else if(e.key === 's' || e.key === 'S'){
         carro.dir = 10
     }
-    // ─── Controles Jogador 2 (↑ / ↓) ───
     if(e.key === 'ArrowUp'){
         carro2.dir = -10
         e.preventDefault()
@@ -73,12 +93,10 @@ function tocaBonk(){
 
 // ─── Colisão ───
 function colisao(){
-    // Jogador 1
     if(carro.colid(carroInimigo))  { carroInimigo.recomeca();  carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
     if(carro.colid(carroInimigo2)) { carroInimigo2.recomeca(); carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
     if(carro.colid(carroInimigo3)) { carroInimigo3.recomeca(); carro.vida -= 1; tocaBonk(); dmgTimer1 = DMG_FRAMES }
 
-    // Jogador 2
     if(carro2.colid(carroInimigoB))  { carroInimigoB.recomeca();  carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
     if(carro2.colid(carroInimigoB2)) { carroInimigoB2.recomeca(); carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
     if(carro2.colid(carroInimigoB3)) { carroInimigoB3.recomeca(); carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
@@ -86,15 +104,11 @@ function colisao(){
 
 // ─── Coletáveis — colisão e efeito ───
 function verificaColetaveis(){
-    // Jogador 1 pega soul1
     if(soul1.ativo && carro.colid(soul1)){
         soul1.ativo = false
         carro.vida = Math.min(carro.vida + 1, VIDA_MAX)
-        // Reaparece depois de um tempo (posição bem longe)
         setTimeout(() => soul1.recomeca(), 8000)
     }
-
-    // Jogador 2 pega soul2
     if(soul2.ativo && carro2.colid(soul2)){
         soul2.ativo = false
         carro2.vida = Math.min(carro2.vida + 1, VIDA_MAX)
@@ -113,8 +127,8 @@ function pontuacao(){
     if(carro2.point(carroInimigoB3)) carro2.pontos += 5
 }
 
-// ─── Desenha sprite no lugar de um carro (alinhado com hitbox) ───
-const DEBUG_HITBOX = false  // mude para true para ver a hitbox em vermelho
+// ─── Desenha sprite ───
+const DEBUG_HITBOX = false
 function desenhaSprite(img, obj){
     des.drawImage(img, obj.x, obj.y, obj.w, obj.h)
     if(DEBUG_HITBOX){
@@ -131,14 +145,13 @@ let pulseFrame = 0
 function desenhaColetavel(soul){
     if(!soul.ativo) return
     pulseFrame++
-    const escala = 1 + Math.sin(pulseFrame * 0.1) * 0.12  // pulsa entre 0.88 e 1.12
+    const escala = 1 + Math.sin(pulseFrame * 0.1) * 0.12
     const cx = soul.x + soul.w / 2
     const cy = soul.y + soul.h / 2
     const dw = soul.w * escala
     const dh = soul.h * escala
 
     des.save()
-    // Brilho ao redor
     des.shadowColor = 'rgba(255, 50, 50, 0.9)'
     des.shadowBlur = 14
     des.drawImage(imgSoul, cx - dw / 2, cy - dh / 2, dw, dh)
@@ -167,7 +180,6 @@ function desenhaHUD(){
     des.save()
     des.font = 'bold 18px monospace'
 
-    // Jogador 1 — topo esquerdo
     des.fillStyle = 'rgba(0,0,100,0.55)'
     des.fillRect(8, 8, 260, 60)
     des.fillStyle = '#7cf'
@@ -175,7 +187,6 @@ function desenhaHUD(){
     des.fillStyle = 'white'
     des.fillText(`❤ ${Math.max(carro.vida, 0)}   ★ ${carro.pontos}`, 16, 54)
 
-    // Jogador 2 — meio esquerdo
     des.fillStyle = 'rgba(100,0,0,0.55)'
     des.fillRect(8, 358, 260, 60)
     des.fillStyle = '#f88'
@@ -186,7 +197,7 @@ function desenhaHUD(){
     des.restore()
 }
 
-// Game Over
+// ─── Game Over ───
 function gameOver(){
     if(carro.vida <= 0){
         window.location.href = "./win2.html";
@@ -200,7 +211,6 @@ function gameOver(){
 function desenha(){
     desenhaDivisoria()
 
-    // Inimigos — pedra.png
     desenhaSprite(imgPedra, carroInimigo)
     desenhaSprite(imgPedra, carroInimigo2)
     desenhaSprite(imgPedra, carroInimigo3)
@@ -208,23 +218,18 @@ function desenha(){
     desenhaSprite(imgPedra, carroInimigoB2)
     desenhaSprite(imgPedra, carroInimigoB3)
 
-    // Coletáveis de vida
     desenhaColetavel(soul1)
     desenhaColetavel(soul2)
 
-    // Jogador 1 — peixe normal ou dano
     desenhaSprite(dmgTimer1 > 0 ? imgPeixeDmg : imgPeixe, carro)
-
-    // Jogador 2 — peixe normal ou dano
     desenhaSprite(dmgTimer2 > 0 ? imgPeixeDmg : imgPeixe, carro2)
 
     desenhaHUD()
     gameOver()
 }
 
-// Atualiza
+// ─── Atualiza ───
 function atualiza(){
-    // Countdown dos timers de dano
     if(dmgTimer1 > 0) dmgTimer1--
     if(dmgTimer2 > 0) dmgTimer2--
 
@@ -241,16 +246,16 @@ function atualiza(){
         carroInimigoB3.mov_car(carro2.pontos)
     }
 
-    // Move coletáveis (velocidade do jogador 1 / 2 respectivamente)
     soul1.mov(carro.pontos)
     soul2.mov(carro2.pontos)
 
     colisao()
     verificaColetaveis()
     pontuacao()
+    atualizaBackground()
 }
 
-// Loop principal
+// ─── Loop principal ───
 function main(){
     des.clearRect(0, 0, 1200, 700)
     desenha()
