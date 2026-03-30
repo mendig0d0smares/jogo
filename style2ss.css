@@ -6,10 +6,10 @@
 }
 
 :root {
-  --bg:          #5bc8f5;
-  --panel-dark:  #1565c0;
-  --panel-mid:   #1976d2;
-  --panel-light: #42a5f5;
+  --bg:          #5bc8f5;   /* light sky blue — page background */
+  --panel-dark:  #1565c0;   /* deep blue — main panels */
+  --panel-mid:   #1976d2;   /* medium blue — credits sub-panel */
+  --panel-light: #42a5f5;   /* lighter blue — img placeholder & button */
   --text:        #000000;
   --label-color: #000000;
   --font-title:  'Fredoka One', cursive;
@@ -140,13 +140,18 @@ body {
   transform: translateY(-2px);
 }
 
-/* ── Foto do programador ── */
-.foto-credito {
-  flex: 1;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+/* Image Placeholder */
+.img-placeholder {
+  background-color: var(--panel-light);
   border-radius: var(--radius-md);
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
 }
 
 /* ── Responsive ── */
