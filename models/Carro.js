@@ -194,11 +194,11 @@ class Carro2 extends Obj{
 }
 
 // ─── Velocidades por nível: [nível1, nível2, nível3] ───
-const VELOCIDADES = [4, 7, 11]
+const VELOCIDADES = [4, 8, 12]
 
 function nivelVelocidade(pontos){
     if(pontos >= 3000) return 2
-    if(pontos >= 600)  return 1
+    if(pontos >= 600)  return 1 
     return 0
 }
 
