@@ -8,7 +8,6 @@ const bonk = new Audio('./bonk.wav')
 const imgPeixe    = new Image(); imgPeixe.src    = './peixe.png'
 const imgPeixeDmg = new Image(); imgPeixeDmg.src = './peixe_dmg.png'
 const imgPedra    = new Image(); imgPedra.src    = './pedra.png'
-const imgSoul     = new Image(); imgSoul.src     = './soul.jpg'
 
 // ─── Controle de dano visual ───
 let dmgTimer1 = 0   // frames que o jogador 1 fica com sprite de dano
@@ -30,14 +29,6 @@ let carro = new Carro(100, 200, 80, 55, 'darkblue')
 
 // ─── Jogador 2 — pista INFERIOR (↑/↓) ───
 let carro2 = new Carro2(100, 520, 80, 55, 'darkred')
-
-// ─── Coletáveis de vida (soul.jpg) ───
-// Um por pista, com spawn atrasado para não aparecer no início
-const SOUL_W = 40
-const SOUL_H = 40
-let soul1 = new Coletavel(1800, 150, SOUL_W, SOUL_H, 10,  295)   // pista superior
-let soul2 = new Coletavel(2200, 500, SOUL_W, SOUL_H, 360, 645)   // pista inferior
-const VIDA_MAX = 5
 
 // ─── Controles Jogador 1 (W / S) ───
 document.addEventListener('keydown', (e) => {
@@ -84,24 +75,6 @@ function colisao(){
     if(carro2.colid(carroInimigoB3)) { carroInimigoB3.recomeca(); carro2.vida -= 1; tocaBonk(); dmgTimer2 = DMG_FRAMES }
 }
 
-// ─── Coletáveis — colisão e efeito ───
-function verificaColetaveis(){
-    // Jogador 1 pega soul1
-    if(soul1.ativo && carro.colid(soul1)){
-        soul1.ativo = false
-        carro.vida = Math.min(carro.vida + 1, VIDA_MAX)
-        // Reaparece depois de um tempo (posição bem longe)
-        setTimeout(() => soul1.recomeca(), 8000)
-    }
-
-    // Jogador 2 pega soul2
-    if(soul2.ativo && carro2.colid(soul2)){
-        soul2.ativo = false
-        carro2.vida = Math.min(carro2.vida + 1, VIDA_MAX)
-        setTimeout(() => soul2.recomeca(), 8000)
-    }
-}
-
 // ─── Pontuação ───
 function pontuacao(){
     if(carro.point(carroInimigo))  carro.pontos  += 5
@@ -124,25 +97,6 @@ function desenhaSprite(img, obj){
         des.strokeRect(obj.x, obj.y, obj.w, obj.h)
         des.restore()
     }
-}
-
-// ─── Desenha coletável com brilho pulsante ───
-let pulseFrame = 0
-function desenhaColetavel(soul){
-    if(!soul.ativo) return
-    pulseFrame++
-    const escala = 1 + Math.sin(pulseFrame * 0.1) * 0.12  // pulsa entre 0.88 e 1.12
-    const cx = soul.x + soul.w / 2
-    const cy = soul.y + soul.h / 2
-    const dw = soul.w * escala
-    const dh = soul.h * escala
-
-    des.save()
-    // Brilho ao redor
-    des.shadowColor = 'rgba(255, 50, 50, 0.9)'
-    des.shadowBlur = 14
-    des.drawImage(imgSoul, cx - dw / 2, cy - dh / 2, dw, dh)
-    des.restore()
 }
 
 // ─── Linha divisória ───
@@ -208,10 +162,6 @@ function desenha(){
     desenhaSprite(imgPedra, carroInimigoB2)
     desenhaSprite(imgPedra, carroInimigoB3)
 
-    // Coletáveis de vida
-    desenhaColetavel(soul1)
-    desenhaColetavel(soul2)
-
     // Jogador 1 — peixe normal ou dano
     desenhaSprite(dmgTimer1 > 0 ? imgPeixeDmg : imgPeixe, carro)
 
@@ -240,13 +190,7 @@ function atualiza(){
         carroInimigoB2.mov_car(carro2.pontos)
         carroInimigoB3.mov_car(carro2.pontos)
     }
-
-    // Move coletáveis (velocidade do jogador 1 / 2 respectivamente)
-    soul1.mov(carro.pontos)
-    soul2.mov(carro2.pontos)
-
     colisao()
-    verificaColetaveis()
     pontuacao()
 }
 

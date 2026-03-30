@@ -247,31 +247,3 @@ class Estrada extends Obj{
         }
     }
 }
-
-// ─── Coletável de vida (soul.png) ───
-class Coletavel extends Obj {
-
-    ativo = true
-
-    constructor(x, y, w, h, yMin, yMax) {
-        super(x, y, w, h, null)
-        this.yMin = yMin
-        this.yMax = yMax
-    }
-
-    recomeca() {
-        // Reaparece fora da tela com posição Y aleatória na pista
-        this.x = 1400 + Math.floor(Math.random() * 600)
-        this.y = Math.floor(Math.random() * (this.yMax - this.yMin) + this.yMin)
-        this.ativo = true
-    }
-
-    mov(pontos) {
-        if (!this.ativo) return
-        const vel = VELOCIDADES[nivelVelocidade(pontos)]
-        this.x -= vel
-        if (this.x <= -100) {
-            this.recomeca()
-        }
-    }
-}
