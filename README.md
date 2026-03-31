@@ -87,3 +87,11 @@ Não requer instalação nem dependências externas. Basta abrir o `index.html` 
 |--------|------|
 | Programador | Pedro Caldart |
 | Project Owner | Carlos Roberto (Prof-Carlos-Senai) |
+
+--Como Instalar e Rodar o Jogo
+
+Método 1 — Abrir direto no navegador (mais fácil)
+Baixe ou extraia a pasta do projeto
+Procure o arquivo: index.html
+Clique duas vezes nele
+

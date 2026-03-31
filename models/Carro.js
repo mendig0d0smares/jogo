@@ -209,7 +209,7 @@ class CarroInimigo extends Obj{
         if(yMin !== undefined && yMax !== undefined){
             this.y = Math.floor(Math.random() * (yMax - yMin) + yMin)
         } else {
-            this.y = Math.floor(Math.random() * (638 - 62) + 62)
+            this.y = Math.floor(Math.random() * (638 - 10) + 10)
         }
     }
 
@@ -223,10 +223,9 @@ class CarroInimigo extends Obj{
 }
 
 class CarroInimigoSup extends CarroInimigo {
-    // Inimigos da pista superior (y de 62 a 345)
     recomeca(){
         this.x = 1300
-        this.y = Math.floor(Math.random() * (345 - 62) + 62)
+        this.y = Math.floor(Math.random() * (345 - 10) + 10)
     }
 }
 
