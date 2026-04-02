@@ -95,3 +95,35 @@ Baixe ou extraia a pasta do projeto
 Procure o arquivo: index.html
 Clique duas vezes nele
 
+
+
+requisitos funcionais:
+RF01 - Movimentação: O sistema deve permitir o controle do
+jogador nos eixos X e/ou Y (dependendo da orientação da
+corrida).
+
+RF02 - Sistema de Vidas: O jogador deve iniciar com um número
+determinado de vidas. Ao colidir com um inimigo, perde-se uma
+vida.
+
+RF03 - Pontuação: O jogo deve ter um sistema de pontuação
+permitindo a geração de um placar.
+
+RF04 - Coletáveis: Devem existir itens na pista que, ao serem
+coletados, somam pontos ou conferem vidas extras.
+
+RF05 - Progressão de Fases: O jogo deve possuir 3 fases
+distintas. A transição deve ocorrer automaticamente após uma
+meta de pontos ou tempo.
+
+requisitos não funcionais:
+portabilidade: o programa foi feito para rodar no navegador feito especificamente
+para desktops com uma resolução de 1920 x 1080
+
+escalabilidade: o jogo não precisa de nenhum servidor portanto não deve ter nenhum problema 
+em comportar uma grande quantidade de usuarios ao mesmo tempo.
+
+desempenho:  o jogo roda em 60 fps com um tempo de resposta de até 0.2 segundos.
+
+regras de negocio:
+o jogo deve ter 3 fases
