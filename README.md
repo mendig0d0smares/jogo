@@ -58,6 +58,11 @@ O nível de cada jogador é calculado individualmente com base nos seus próprio
 ├── models/
 │   └── Carro.js        # Classes: Obj, Carro, Carro2, CarroInimigo, Coletavel, Estrada
 │
+├── diagramas_uml/
+│   └── caso_de_uso_uml
+│   └── classe_uml
+│   └── sequencia_uml
+│
 ├── peixe.png           # Sprite do peixe (normal)
 ├── peixe_dmg.png       # Sprite do peixe (tomando dano)
 ├── pedra.png           # Sprite da pedra (inimigo)
